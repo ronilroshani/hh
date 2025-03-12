@@ -68,6 +68,8 @@ class UserManagement:
         self.root.title("مدیریت کاربران")
         self.root.configure(bg="#c2b9ad")
 
+        style = ttk.Style()
+        style.configure('TButton', font=('Helvetica', 12), padding=10, background='#brown',foreground='#brown')  # رنگ قرمز برای دکمه‌ها
         # بسته شدن خودکار وقتی پنجره اصلی بسته شود
         master.protocol("WM_DELETE_WINDOW", self.on_main_close)
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
@@ -108,7 +110,8 @@ class UserManagement:
         self.role_var.set("user")
         tk.OptionMenu(frame, self.role_var, "admin", "user").pack(pady=2)
 
-        ttk.Button(frame, text="افزودن کاربر", command=self.add_user).pack(pady=10)
+        ttk.Button(frame, text="افزودن کاربر", command=self.add_user,style='Custom.TButton').pack(pady=10)
+        # افزودن دکمه با استایل
 
     def setup_edit_user_tab(self):
         """ایجاد لیست کاربران برای ویرایش"""
@@ -123,9 +126,7 @@ class UserManagement:
         self.tree.column("نام کاربری", width=150, anchor="e")
         self.tree.column("نقش", width=100, anchor="e")
         self.tree.pack(fill="both", expand=True, pady=5)
-
-        ttk.Button(frame, text="ویرایش رمز عبور", command=self.edit_user).pack(pady=5)
-
+        ttk.Button(frame, text="ویرایش رمز عبور", command=self.edit_user,style='Custom.TButton').pack(pady=5)
         self.load_users()  # 🔥 اضافه کردن اینجا تا کاربران هنگام باز شدن فرم بارگذاری شوند
 
     def auto_resize(self):
@@ -153,7 +154,6 @@ class UserManagement:
         """وقتی پنجره اصلی بسته شد، این فرم هم بسته شود"""
         self.on_close()
 
-
     def setup_edit_user_tab(self):
         """ایجاد لیست کاربران برای ویرایش"""
         frame = tk.Frame(self.tab_edit_user, bg="#c2b9ad", padx=10, pady=10)
@@ -173,30 +173,77 @@ class UserManagement:
         self.load_users()  # 🔥 اضافه کردن اینجا تا کاربران هنگام باز شدن فرم بارگذاری شوند
 
     def load_users(self):
-        conn = pyodbc.connect(self)
-        cursor = conn.cursor()
-        cursor.execute("SELECT Username FROM Users")
-        users = cursor.fetchall()
-        conn.close()
+        """بارگذاری کاربران در لیست"""
+        try:
+            conn = pyodbc.connect(self.get_connection_string())
+            cursor = conn.cursor()
+            cursor.execute("SELECT Username, Role FROM Users")
+            users = cursor.fetchall()
+            conn.close()
 
-        for user in users:
-            self.listbox.insert(tk.END, user[0])
+            self.tree.delete(*self.tree.get_children())  # پاک کردن مقادیر قبلی
 
-            def edit_user(self):
-                selected = self.listbox.curselection()
-                if not selected:
-                    messagebox.showerror("خطا", "یک کاربر را انتخاب کنید!")
-                    return
-                username = self.listbox.get(selected[0])
+            if not users:
+                messagebox.showwarning("لیست کاربران", "هیچ کاربری در سیستم وجود ندارد!")
 
-                new_password = tk.simpledialog.askstring("ویرایش رمز", f"رمز جدید برای {username}: ", show="*")
-                if new_password:
-                    conn = pyodbc.connect(self.get_connection_string())
-                    cursor = conn.cursor()
-                    new_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-                    cursor.execute("UPDATE Users SET PasswordHash = ? WHERE Username = ?", (new_hash, username))
-                    conn.commit()
-                    conn.close()
-                    messagebox.showinfo("موفقیت", "رمز عبور تغییر کرد!")
+            for user in users:
+                self.tree.insert("", tk.END, values=(user[0], user[1]))
+
+        except Exception as e:
+            messagebox.showerror("خطا", f"مشکل در بارگذاری کاربران: {e}")
+
+    def add_user(self):
+        """افزودن کاربر جدید"""
+        username = self.username_entry.get().strip()
+        password = self.password_entry.get().strip()
+
+        if not re.match("^[a-zA-Z]+$", username):
+            messagebox.showerror("خطا", "نام کاربری فقط باید شامل حروف انگلیسی باشد.")
+            return
+
+        if len(password) < 8:
+            messagebox.showerror("خطا", "رمز عبور باید حداقل ۸ کاراکتر باشد.")
+            return
+
+        try:
+            conn = pyodbc.connect(self.get_connection_string())
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Users (Username, PasswordHash) VALUES (?, ?)",
+                           (username, bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("موفقیت", "✅ کاربر جدید اضافه شد!")
+            self.load_users()  # 🔥 بلافاصله بعد از اضافه شدن، لیست کاربران را به‌روزرسانی کن
+        except pyodbc.IntegrityError:
+            messagebox.showerror("❌ خطا", "نام کاربری تکراری است.")
+        except Exception as e:
+            messagebox.showerror("❌ خطا در افزودن کاربر", str(e))
+
+    def edit_user(self):
+        """ویرایش رمز عبور کاربر"""
+        selected_item = self.tree.selection()
+        if not selected_item:
+            messagebox.showerror("خطا", "یک کاربر را انتخاب کنید!")
+            return
+
+        username = self.tree.item(selected_item[0], "values")[0]
+        new_password = simpledialog.askstring("ویرایش رمز", f"رمز جدید برای {username}: ", show="*")
+
+        if not new_password or len(new_password) < 8:
+            messagebox.showerror("خطا", "رمز عبور باید حداقل ۸ کاراکتر باشد.")
+            return
+
+        password_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+        try:
+            conn = pyodbc.connect(self.get_connection_string())
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Users SET PasswordHash = ? WHERE Username = ?", (password_hash, username))
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("موفقیت", "✅ رمز عبور کاربر ویرایش شد!")
+
+        except Exception as e:
+            messagebox.showerror("❌ خطا در ویرایش کاربر", str(e))
 
 
