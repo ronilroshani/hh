@@ -1,0 +1,36 @@
+2024-09-15 10:06:04,360 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:06:38,974 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:06:50,989 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:14:22,407 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:15:45,518 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:30:38,278 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:33:45,808 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:35:09,641 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:35:53,035 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:36:07,074 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:37:24,663 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:38:01,261 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:39:11,986 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:39:26,589 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:43:36,757 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:43:46,199 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:43:54,622 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:45:31,682 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:46:06,994 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 10:46:24,401 - ERROR - TypeError: DatabaseManager.__init__() missing 3 required positional arguments: 'database', 'username', and 'password'
+2024-09-15 11:07:37,882 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:13:07,351 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:13:20,020 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:13:33,728 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:14:49,398 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:15:15,322 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:15:28,658 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:15:50,840 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:15:58,329 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:16:25,221 - ERROR - Failed to initialize the application: maximum recursion depth exceeded
+2024-09-15 11:18:21,754 - ERROR - Failed to initialize the application: could not convert string to float: ''
+2024-09-15 11:25:50,227 - ERROR - Failed to initialize the application: name 'FormManager' is not defined
+2024-09-15 11:29:42,256 - ERROR - Failed to initialize the application: name 'FormManager' is not defined
+2024-09-15 11:30:25,116 - ERROR - Failed to initialize the application: name 'FormManager' is not defined
+2024-09-15 11:30:57,514 - ERROR - Failed to initialize the application: name 'FormManager' is not defined
+2024-09-15 11:31:44,609 - ERROR - TypeError: FormManager.__init__() missing 1 required positional argument: 'db_manager'
